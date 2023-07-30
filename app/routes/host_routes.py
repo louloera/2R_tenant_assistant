@@ -3,6 +3,7 @@ from app import db
 from app.models.host import Host
 from app.models.home import Home
 from app.valid import validate_id, validate_entry
+import datetime
 
 host_bp = Blueprint ("host", __name__, url_prefix="/host")
 
@@ -13,9 +14,10 @@ host_bp = Blueprint ("host", __name__, url_prefix="/host")
 def create_host():
     request_body = request.get_json()
     valid_request = validate_entry(Host, request_body)
+    
 
     new_host = Host.from_dict(valid_request)
-    
+    # new_host.initiation_date= datetime.datetime.utcnow()
     db.session.add(new_host)
     db.session.commit()
     return jsonify(new_host.to_dict()), 201

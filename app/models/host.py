@@ -1,4 +1,7 @@
 from app import db
+from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask 
 
 class Host(db.Model):
     __tablename__='hosts'
@@ -6,7 +9,7 @@ class Host(db.Model):
     password=db.Column(db.String)
     username = db.Column(db.String, unique=True)
     # homes
-    initiation_date= db.Column(db.DateTime)
+    # initiation_date= db.Column(db.DateTime, nullable=True)
     email = db.Column(db.String(120), unique=True)
     homes = db.relationship('Home', back_populates='host', lazy=True)
 

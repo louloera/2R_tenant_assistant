@@ -12,7 +12,10 @@ class Home(db.Model):
     #items=
     items = db.relationship('Item', back_populates='home', lazy=True)
     # towel
+    towel = db.relationship('Towel', back_populates='home', lazy=True)
     # trash 
+    trash = db.relationship('Trash', back_populates='home', lazy=True)
+
 
 
     def to_dict(self):

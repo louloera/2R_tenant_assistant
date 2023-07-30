@@ -6,3 +6,4 @@ class Towel(db.Model):
     location = db.Column(db.String)
     # home
     home_id = db.Column(db.Integer, db.ForeignKey('homes.id'), nullable=False)
+    home = db.relationship('Home', back_populates='towel')
