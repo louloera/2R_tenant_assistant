@@ -32,8 +32,10 @@ def create_app():
     # Register Blueprints here
     
     from app.routes.home_routes import home_bp
+    from app.routes.host_routes import host_bp
 
     app.register_blueprint(home_bp)
+    app.register_blueprint(host_bp)
 
     CORS(app)
     return app

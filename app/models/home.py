@@ -15,5 +15,25 @@ class Home(db.Model):
     # trash 
 
 
+    def to_dict(self):
+        return {
+                'home_id': self.id,
+                'name': self.name,
+                'host_id':self.host_id
+        }
+
+    @classmethod
+    def get_attributes(cls):
+        return 'name', 'address'
+    
+    @classmethod
+    def from_dict(cls, request_body):
+        home = cls(
+                    address=request_body['address'],
+                    name=request_body['name'],
+                    host_id=request_body.get('host_id')
+                    )
+        return home
+
 
 
