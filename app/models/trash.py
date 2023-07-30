@@ -6,4 +6,4 @@ class Trash(db.Model):
     days= db.Column(db.String)
     time= db.Column(db.Integer)
     #home
-    home_id = db.Column(db.Integer, db.ForeignKey('home.id'), nullable=False)
+    home_id = db.Column(db.Integer, db.ForeignKey('homes.id'), nullable=False)

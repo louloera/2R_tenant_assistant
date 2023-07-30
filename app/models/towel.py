@@ -5,4 +5,4 @@ class Towel(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     location = db.Column(db.String)
     # home
-    home_id = db.Column(db.Integer, db.ForeignKey('home.id'), nullable=False)
+    home_id = db.Column(db.Integer, db.ForeignKey('homes.id'), nullable=False)

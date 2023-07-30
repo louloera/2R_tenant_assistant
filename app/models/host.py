@@ -8,7 +8,7 @@ class Host(db.Model):
     # homes
     initiation_date= db.Column(db.DateTime)
     email = db.Column(db.String(120), unique=True)
-    homes = db.relationship('Home', back_populates='host', lazy=True)
+    homes = db.relationship('Home', back_populates='hosts', lazy=True)
 
 
 

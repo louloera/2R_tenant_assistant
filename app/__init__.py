@@ -14,28 +14,26 @@ def create_app():
     CORS(app, resources={r'/*': {"origins": "*"}}, headers='Content-Type')
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-        "SQLALCHEMY_DATABASE_URI")
+    # app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+        # "SQLALCHEMY_DATABASE_URI")
+    
+    app.config["SQLALCHEMY_DATABASE_URI"] ='postgresql+psycopg2://postgres:postgres@localhost:5432/your_tenant_assistant'
    
 
-    # Import models here for Alembic setup
-    # from app.models.ExampleModel import ExampleModel
-
-    # from app.models.card import Card
-    # from app.models.board import Board
+    from app.models.host import Host
+    from app.models.home import Home
+    from app.models.towel import Towel
+    from app.models.trash import Trash
+    from app.models.item import Item
 
     db.init_app(app)
     migrate.init_app(app, db)
 
     # Register Blueprints here
     
-    # from .routes.cards_routes import cards_bp
-    # from .routes.boards_route import boards_bp
+    from app.routes.home_routes import home_bp
 
-    # app.register_blueprint(cards_bp)
-    # app.register_blueprint(boards_bp)
-
-
+    app.register_blueprint(home_bp)
 
     CORS(app)
     return app

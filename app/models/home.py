@@ -7,7 +7,7 @@ class Home(db.Model):
     # host_id= 
     host_id = db.Column(db.Integer, db.ForeignKey('hosts.id'), nullable=True)
     host = db.relationship('Host', back_populates='homes')
-    address = db.Column(db.Varchar)
+    address = db.Column(db.String(120))
     checkout_time= db.Column(db.Integer)
     #items=
     items = db.relationship('Item', back_populates='home', lazy=True)
