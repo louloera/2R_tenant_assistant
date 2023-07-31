@@ -35,7 +35,7 @@ def delete_host(home_id):
 # @cross_origin()
 def post_trash_to_specific_home(home_id):
     
-    trash =validate_id(Trash, home_id)
+    home =validate_id(Home, home_id)
     request_body = request.get_json()
     
     valid_request = validate_entry(Trash, request_body)
@@ -48,17 +48,29 @@ def post_trash_to_specific_home(home_id):
     return (new_trash.to_dict()), 200
 
 @home_bp.route('/<home_id>/trash', methods=['GET'])
-def get_trah(home_id):
+def get_trash(home_id):
 
-    trash = validate_id(Trash,home_id)
-    home_response = trash.to_dict()
-    return jsonify(home_response), 200
+    home = validate_id(Home,home_id)
+    trashes =Trash.query.filter(Trash.home_id==home_id)
+    for trash in trashes:
+        trash_response = trash.to_dict()
+        
+
+    # trash = validate_id(Trash, home.trash.id)
+    
+    return jsonify(trash_response), 200
 
 @home_bp.route('/<home_id>/trash', methods=['DELETE'])
 def delete_trash(home_id):
     home = validate_id(Home,home_id)
-    trash_id = home.name
-    db.session.delete(home)
+    trashes =Trash.query.filter(Trash.home_id==home_id)
+
+    for trash in trashes:
+        the_trash = trash.to_dict()
+        print(the_trash)
+        the_trash = validate_id(Trash, str(the_trash['trash_id']))
+
+    db.session.delete(the_trash)
     db.session.commit()
-    return {'details': f'Home {home_id} "{home_name}" successfully deleted'}, 200
+    return {'details': f'Trash {the_trash.id} successfully deleted'}, 200
 
