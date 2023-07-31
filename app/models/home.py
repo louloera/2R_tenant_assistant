@@ -23,19 +23,22 @@ class Home(db.Model):
                 'home_id': self.id,
                 'name': self.name,
                 'host_id':self.host_id,
-                'address':self.address
+                'address':self.address,
+                'checkout': self.checkout_time
+                
         }
 
     @classmethod
     def get_attributes(cls):
-        return 'name', 'address'
+        return 'name', 'address', 'checkout'
     
     @classmethod
     def from_dict(cls, request_body):
         home = cls(
                     address=request_body['address'],
                     name=request_body['name'],
-                    host_id=request_body.get('host_id')
+                    host_id=request_body.get('host_id'),
+                    checkout_time = request_body['checkout']
                     )
         return home
 
