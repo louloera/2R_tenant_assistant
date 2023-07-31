@@ -27,3 +27,5 @@ class Towel(db.Model):
                     home_id=request_body.get('home_id')
                     )
         return trash
+    
+    

@@ -3,6 +3,7 @@ from app import db
 from app.models.home import Home
 from app.models.trash import Trash
 from app.models.towel import Towel
+from app.models.item import Item
 from app.valid import validate_id, validate_entry
 
 
@@ -84,7 +85,6 @@ def post_towels_to_specific_home(home_id):
 def get_towel(home_id):
     home = validate_id(Home,home_id)
     towels =Towel.query.filter(Towel.home_id==home_id)
-    print (towels)
     if towels: 
         for towel in towels:
             towel_response = towel.to_dict()
@@ -102,3 +102,40 @@ def delete_towels(home_id):
     db.session.delete(the_towel)
     db.session.commit()
     return {'details': f'Towel {the_towel.id} successfully deleted'}, 200
+
+################### ITEMS ############################
+
+@home_bp.route('/<home_id>/items', methods=['POST'])
+# @cross_origin()
+def post_items_to_specific_home(home_id):
+    home =validate_id(Home, home_id)
+    request_body = request.get_json()
+    valid_request = validate_entry(Item, request_body)
+    new_item = Item.from_dict(valid_request)
+    new_item.home_id = home_id
+    db.session.add(new_item)
+    db.session.commit()
+    return (new_item.to_dict()), 200
+
+@home_bp.route('/<home_id>/items', methods=['GET'])
+def get_item(home_id):
+    home = validate_id(Home,home_id)
+    items =Item.query.filter(Item.home_id==home_id)
+    if items: 
+        for item in items:
+            item_response = item.to_dict()
+    else: 
+        item_response= (f'No Items for {home_id}')
+    return jsonify(item_response), 200
+
+@home_bp.route('/<home_id>/items', methods=['DELETE'])
+def delete_items(home_id):
+    home = validate_id(Home,home_id)
+    items =Item.query.filter(Item.home_id==home_id)
+    for item in items:
+        the_item = item.to_dict()
+        the_item = validate_id(Item, str(the_item['item_id']))
+    db.session.delete(the_item)
+    db.session.commit()
+    return {'details': f'Item {the_item.id} successfully deleted'}, 200
+
