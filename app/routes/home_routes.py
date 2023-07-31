@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, abort, make_response,request
 from app import db 
 from app.models.home import Home
 from app.models.trash import Trash
+from app.models.towel import Towel
 from app.valid import validate_id, validate_entry
 
 
@@ -31,46 +32,73 @@ def delete_host(home_id):
     return {'details': f'Home {home_id} "{home_name}" successfully deleted'}, 200
 
 
+################### TRASH ############################
+
 @home_bp.route('/<home_id>/trash', methods=['POST'])
 # @cross_origin()
 def post_trash_to_specific_home(home_id):
-    
     home =validate_id(Home, home_id)
     request_body = request.get_json()
-    
     valid_request = validate_entry(Trash, request_body)
     new_trash = Trash.from_dict(valid_request)
     new_trash.home_id = home_id
-    
     db.session.add(new_trash)
     db.session.commit()
-
     return (new_trash.to_dict()), 200
 
 @home_bp.route('/<home_id>/trash', methods=['GET'])
 def get_trash(home_id):
-
     home = validate_id(Home,home_id)
     trashes =Trash.query.filter(Trash.home_id==home_id)
     for trash in trashes:
         trash_response = trash.to_dict()
-        
-
-    # trash = validate_id(Trash, home.trash.id)
-    
     return jsonify(trash_response), 200
 
 @home_bp.route('/<home_id>/trash', methods=['DELETE'])
 def delete_trash(home_id):
     home = validate_id(Home,home_id)
     trashes =Trash.query.filter(Trash.home_id==home_id)
-
     for trash in trashes:
         the_trash = trash.to_dict()
-        print(the_trash)
         the_trash = validate_id(Trash, str(the_trash['trash_id']))
-
     db.session.delete(the_trash)
     db.session.commit()
     return {'details': f'Trash {the_trash.id} successfully deleted'}, 200
 
+
+################### TOWELS ############################
+
+@home_bp.route('/<home_id>/towels', methods=['POST'])
+# @cross_origin()
+def post_towels_to_specific_home(home_id):
+    home =validate_id(Home, home_id)
+    request_body = request.get_json()
+    valid_request = validate_entry(Towel, request_body)
+    new_towel = Towel.from_dict(valid_request)
+    new_towel.home_id = home_id
+    db.session.add(new_towel)
+    db.session.commit()
+    return (new_towel.to_dict()), 200
+
+@home_bp.route('/<home_id>/towels', methods=['GET'])
+def get_towel(home_id):
+    home = validate_id(Home,home_id)
+    towels =Towel.query.filter(Towel.home_id==home_id)
+    print (towels)
+    if towels: 
+        for towel in towels:
+            towel_response = towel.to_dict()
+    else: 
+        towel_response= (f'No Towels for {home_id}')
+    return jsonify(towel_response), 200
+
+@home_bp.route('/<home_id>/towels', methods=['DELETE'])
+def delete_towels(home_id):
+    home = validate_id(Home,home_id)
+    towels =Towel.query.filter(Towel.home_id==home_id)
+    for towel in towels:
+        the_towel = towel.to_dict()
+        the_towel = validate_id(Towel, str(the_towel['towel_id']))
+    db.session.delete(the_towel)
+    db.session.commit()
+    return {'details': f'Towel {the_towel.id} successfully deleted'}, 200
