@@ -22,7 +22,8 @@ class Home(db.Model):
         return {
                 'home_id': self.id,
                 'name': self.name,
-                'host_id':self.host_id
+                'host_id':self.host_id,
+                'address':self.address
         }
 
     @classmethod
