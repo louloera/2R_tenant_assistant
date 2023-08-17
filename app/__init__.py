@@ -17,7 +17,7 @@ def create_app():
     CORS(app, resources={r'/*': {"origins": "*"}}, headers='Content-Type')
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     
-    # app.config["SQLALCHEMY_DATABASE_URI"] ='postgresql+psycopg2://postgres:postgres@localhost:5432/your_tenant_assistant'
+    
     app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get('Elephant')
     
     from app.models.host import Host
